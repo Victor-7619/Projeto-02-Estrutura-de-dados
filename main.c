@@ -1,6 +1,6 @@
 #include"Arvore.h"
 
-void menu(Arv *L){
+void menu(Arv *L, Eqp *hash[]){
     int escolha, verifica = 1;
 
     do{
@@ -27,7 +27,8 @@ void menu(Arv *L){
 
         switch(escolha){
             case 1:
-                cadastroEqp(L);
+                pause();
+                cadastroEqp(hash);
                 break;
             case 2:
                 break;
@@ -60,15 +61,7 @@ int main(){
     Eqp *hash[101];
     inicializaHash(hash);
 
-    menu(L);
+    menu(L,hash);
 
-    while(1){
-        if(insereArv(L,criaNo())){
-            printf("\ninserido!");
-        }
-        else{
-            printf("nao inserido");
-        }
-    }
     return 0;
 }

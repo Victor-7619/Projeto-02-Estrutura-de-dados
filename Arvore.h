@@ -10,15 +10,21 @@ typedef struct noArvore{
     int numIdem;
     int codeEqp;
     int gravLevel;
-    struct noArv *esq;
-    struct noArv *dir;
+    struct noArvore *esq;
+    struct noArvore *dir;
 }noArv;
 
 typedef struct baseArv{
     noArv *raiz;
 }Arv;
 
-// INICIALIZAÇAO/LIBERAÇAO DE LISTA
+typedef struct infosEquipamento{
+    int codeEqp;
+    char nicknameEqp[11];
+    struct infosEquipamento *prox;
+}Eqp;
+
+// INICIALIZAÇAO/LIBERAÇAO DE LISTA E HASH
 Arv *criaArv() {
     Arv *aux = (Arv*)malloc(sizeof(Arv));
     aux -> raiz = NULL;
@@ -47,21 +53,52 @@ int arvVazia(Arv *p){
     return 0;
 }
 
+void inicializaHash(Eqp *hash[]){
+    for(int i = 0; i < 101; i++){
+        hash[i] = NULL;
+    }
+}
+
 //AUXILIARES
-void pause()
-{
+void pause(){
     printf("\n\n");
     system("pause");
     system("cls");
 }
-void limpar_buffer()
-{
+
+void limpar_buffer(){
     int c;
     while((c = getchar()) != '\n' && c != EOF);
 }
 
+int confereNumIdem(Arv *p,int code){
+    noArv *pai = p -> raiz;
 
+    if(pai == NULL)
+    {
+        return 0;
+    }
 
+    while(1){
+        if(pai -> numIdem == code){
+            return 1;
+        }
+        if(code < pai -> numIdem){
+            if(pai -> esq == NULL){
+                return 0;
+            }
+            pai = pai -> esq;
+        }
+        else{
+            if(pai -> dir == NULL){
+                return 0;
+            }
+            pai = pai -> dir;
+        }
+    }
+
+}
+//INSERIR NA ARVORE
 noArv *auxInsereArv(Arv *arvore, noArv *novo, int *boolean){
     noArv *pai = arvore -> raiz;
 
@@ -106,5 +143,78 @@ int insereArv(Arv *arv, noArv *novo){
     return boolean;
 }
 
+
+//HASH
+int confereLista(Eqp *inicio,Eqp *novo){
+    while(inicio != NULL){
+        if(inicio -> codeEqp == novo -> codeEqp){
+            return 0;
+        }
+        inicio = inicio -> prox;
+    }
+    return 1;
+}
+
+int funcHash(int code){
+    return code%101;
+}
+
+int inserirHash(Eqp *novo, Eqp *hash[]){
+    int pos = funcHash(novo -> codeEqp);
+
+    if(hash[pos] == NULL){
+        hash[pos] = novo;
+        return 1;
+    }
+    if(confereLista(hash[pos],novo)){
+        novo -> prox = hash[pos];
+        hash[pos]= novo;
+        return 1;
+    }
+    return 0;
+}
+
+
+//INSERÇÃO DE INFORMAÇÕES
+void insereNumIdem(Arv *p, noArv *novo){
+    int entrada;
+    do
+    {
+        entrada = 1;
+        verifica = 0;
+
+        printf("\n  [01/05] NÚMERO DE IDENTIFICAÇÃO DO INCIDENTE\n");
+        printf("  > Informe o código (1000 a 9999): ");
+
+        scanf("%d",&entrada);
+        limpar_buffer();
+
+        if(entrada < 1000 || entrada > 9999)
+        {
+            verifica = 1;
+            printf("\n  [ERRO] O código deve conter 4 dígitos.\n");
+            pause();
+        }
+        else
+        {
+            novo -> numIdem = entrada;
+            if(VerCod(p,entrada))
+            {
+                verifica = 1;
+                printf("\n  [ERRO] Código já cadastrado.\n");
+                pause();
+            }
+        }
+    }while(verifica == 1);
+
+}
+
+
+//CADASTRO DE EQUIPAMENTO
+
+
+void cadastroEqp(Arv *L){
+
+}
 
 #endif // ARVORE_H_INCLUDED

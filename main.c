@@ -27,6 +27,7 @@ void menu(Arv *L){
 
         switch(escolha){
             case 1:
+                cadastroEqp(L);
                 break;
             case 2:
                 break;
@@ -54,7 +55,10 @@ void menu(Arv *L){
 
 int main(){
     SetConsoleOutputCP(CP_UTF8);
+
     Arv *L = criaArv();
+    Eqp *hash[101];
+    inicializaHash(hash);
 
     menu(L);
 

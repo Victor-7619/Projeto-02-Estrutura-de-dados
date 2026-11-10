@@ -9,7 +9,7 @@
 // STRUCT'S
 typedef struct noArvore{
     int numIdem;
-    int codeEqp;
+    int codeEqpArv;
     int gravLevel;
     struct noArvore *esq;
     struct noArvore *dir;
@@ -33,28 +33,6 @@ Arv *criaArv() {
     return aux;
 }
 
-noArv *criaNo(){
-    noArv *novo = (noArv*)malloc(sizeof(noArv));
-    novo -> esq = NULL;
-    novo -> dir = NULL;
-
-    printf("\nDigite Numero de identificação: ");
-    scanf("%d",&novo -> numIdem);
-    printf("\nDigite Code Equipamento relacionado: ");
-    scanf("%d",&novo -> codeEqp);
-    printf("\nDigite gravLevel: ");
-    scanf("%d",&novo -> gravLevel);
-
-    return novo;
-}
-
-int arvVazia(Arv *p){
-    if(p -> raiz == NULL){
-        return 1;
-    }
-    return 0;
-}
-
 void inicializaHash(Eqp *hash[]){
     for(int i = 0; i < 101; i++){
         hash[i] = NULL;
@@ -74,28 +52,41 @@ void limpar_buffer(){
     while((c = getchar()) != '\n' && c != EOF);
 }
 
+char *printaGrav(int grav)
+{
+    switch (grav) {
+        case 1:
+            return "baixa";
+
+        case 2:
+            return "media";
+
+        case 3:
+            return "alta";
+    }
+}
 
 
 //INSERIR NA ARVORE
-noArv *auxInsereArv(Arv *arvore, noArv *novo, int *boolean){
+int arvVazia(Arv *p){
+    if(p -> raiz == NULL){
+        return 1;
+    }
+    return 0;
+}
+
+noArv *auxInsereArv(Arv *arvore, noArv *novo){
     noArv *pai = arvore -> raiz;
 
     if(arvVazia(arvore)){
-        *boolean = 1;
         return novo;
     }
 
-    int flag = 0;
-
-    while(!flag){
-        if(novo -> numIdem == pai -> numIdem){
-            *boolean = 0;
-            return arvore -> raiz;
-        }
+    while(1){
         if(novo -> numIdem > pai -> numIdem){
             if(pai -> dir == NULL){
                 pai -> dir = novo;
-                flag = 1;
+                return arvore -> raiz;
             }
             else{
                 pai = pai -> dir;
@@ -104,15 +95,13 @@ noArv *auxInsereArv(Arv *arvore, noArv *novo, int *boolean){
         else{
             if(pai -> esq == NULL){
                 pai -> esq = novo;
-                flag = 1;
+                return arvore -> raiz;
             }
             else{
                 pai = pai -> esq;
             }
         }
     }
-    *boolean = 1;
-    return arvore -> raiz;
 }
 
 int insereArv(Arv *arv, noArv *novo){
@@ -133,7 +122,7 @@ int confereNumIdemArv(Arv *p,int code){
         if(pai -> numIdem == code){
             return 1;
         }
-        if(code < pai -> numIdem){
+        if(pai -> numIdem > code){
             if(pai -> esq == NULL){
                 return 0;
             }
@@ -151,9 +140,9 @@ int confereNumIdemArv(Arv *p,int code){
 
 //CADASTRO DE EQUIPAMENTO
 //hash
-int confereLista(Eqp *inicio,Eqp *novo){
+int confereLista(Eqp *inicio,int codeEqp){
     while(inicio != NULL){
-        if(inicio -> codeEqp == novo -> codeEqp){
+        if(inicio -> codeEqp == codeEqp){
             return 1;
         }
         inicio = inicio -> prox;
@@ -178,11 +167,11 @@ void insereHash(Eqp *hash[], Eqp *novo){
 }
 
 
-//INSERÇÃO DE INFORMAÇÕES
-int confereNumIdemHash(Eqp *hash[], Eqp *novo){
-    int pos = funcHash(novo -> codeEqp);
+//inserção de informações
+int confereNumIdemHash(Eqp *hash[], int code){
+    int pos = funcHash(code);
 
-    if(confereLista(hash[pos],novo)){
+    if(confereLista(hash[pos],code)){
         return 1;
     }
     return 0;
@@ -195,7 +184,7 @@ void insereNumIdem(Eqp *hash[], Eqp *novo){
         entrada = 1;
         verifica = 0;
 
-        printf("\n  [01/02] NÚMERO DE IDENTIFICAÇÃO DO INCIDENTE\n");
+        printf("\n  [01/02] NÚMERO DE IDENTIFICAÇÃO DO EQUIPAMENTO\n");
         printf("  > Informe o código (1000 a 9999): ");
 
         scanf("%d",&entrada);
@@ -210,7 +199,7 @@ void insereNumIdem(Eqp *hash[], Eqp *novo){
         else
         {
             novo -> codeEqp = entrada;
-            if(confereNumIdemHash(hash,novo))
+            if(confereNumIdemHash(hash,novo -> codeEqp))
             {
                 verifica = 1;
                 printf("\n  [ERRO] Código já cadastrado.\n");
@@ -241,7 +230,7 @@ void insereNicknameEqp(Eqp *hash[], Eqp *novo){
 }
 
 
-//Edição
+//Cadastro e edição
 void editaInfoEqp(Eqp *hash[],Eqp *novo)
 {
     int escolha, verifica = 0;
@@ -312,7 +301,7 @@ void cadastroEqp(Eqp *hash[]){
         printf("\n");
         printf("  ╔═══════════════════════════════════════════════════════╗\n");
         printf("  ║                                                       ║\n");
-        printf("  ║                   NOVA SOLICITAÇÃO                    ║\n");
+        printf("  ║                   NOVA INSERÇÃO                       ║\n");
         printf("  ║         Confira os dados antes de confirmar           ║\n");
         printf("  ║                                                       ║\n");
         printf("  ╠═══════════════════════════════════════════════════════╣\n");
@@ -355,6 +344,234 @@ void cadastroEqp(Eqp *hash[]){
         }
     }while(verifica == 1);
 
+}
+
+
+//REGISTRO DE INCIDENTE
+//Árvore
+int arvVazia(Arv *p){
+    if(p -> raiz == NULL){
+        return 1;
+    }
+    return 0;
+}
+
+noArv *auxInsereArv(Arv *arvore, noArv *novo){
+    noArv *pai = arvore -> raiz;
+
+    if(arvVazia(arvore)){
+        return novo;
+    }
+
+    while(1){
+        if(novo -> numIdem > pai -> numIdem){
+            if(pai -> dir == NULL){
+                pai -> dir = novo;
+                return arvore -> raiz;
+            }
+            else{
+                pai = pai -> dir;
+            }
+        }
+        else{
+            if(pai -> esq == NULL){
+                pai -> esq = novo;
+                return arvore -> raiz;
+            }
+            else{
+                pai = pai -> esq;
+            }
+        }
+    }
+}
+
+void insereArv(Arv *arv, noArv *novo){
+    arv -> raiz = auxInsereArv(arv, novo,&boolean);
+}
+
+int confereNumIdemArv(Arv *p,int code){
+    noArv *pai = p -> raiz;
+
+    if(pai == NULL)
+    {
+        return 0;
+    }
+
+    while(1){
+        if(pai -> numIdem == code){
+            return 1;
+        }
+        if(pai -> numIdem > code){
+            if(pai -> esq == NULL){
+                return 0;
+            }
+            pai = pai -> esq;
+        }
+        else{
+            if(pai -> dir == NULL){
+                return 0;
+            }
+            pai = pai -> dir;
+        }
+    }
+}
+
+
+//inserção de informações
+void insereNumIdemInc(Arv *pai, noArv *novo){
+    int entrada,verifica;
+    do
+    {
+        entrada = 1;
+        verifica = 0;
+
+        printf("\n  [01/03] NÚMERO DE IDENTIFICAÇÃO DO INCIDENTE\n");
+        printf("  > Informe o código (10 a 99: ");
+
+        scanf("%d",&entrada);
+        limpar_buffer();
+
+        if(entrada < 10 || entrada > 99)
+        {
+            verifica = 1;
+            printf("\n  [ERRO] O código deve conter 2 dígitos.\n");
+            pause();
+        }
+        else
+        {
+            novo -> numIdem = entrada;
+            if(confereNumIdemArv(pai,novo -> numIdem))
+            {
+                verifica = 1;
+                printf("\n  [ERRO] Código já cadastrado.\n");
+                pause();
+            }
+        }
+    }while(verifica == 1);
+
+}
+
+void insereCodeEqp(Eqp *hash[], noArv *novo){
+    int entrada,verifica;
+    do
+    {
+        entrada = 1;
+        verifica = 0;
+
+        printf("\n  [02/03] NÚMERO DE IDENTIFICAÇÃO DO EQUIPAMENTO RELACIONADO\n");
+        printf("  > Informe o código (1000 a 9999: ");
+
+        scanf("%d",&entrada);
+        limpar_buffer();
+
+        if(entrada < 1000 || entrada > 9999)
+        {
+            verifica = 1;
+            printf("\n  [ERRO] O código deve conter 4 dígitos.\n");
+            pause();
+        }
+        else
+        {
+            novo -> codeEqpArv = entrada;
+            if(!confereNumIdemHash(hash,novo -> codeEqpArv))
+            {
+                verifica = 1;
+                printf("\n  [ERRO] Equipamento não encontrado.\n");
+                pause();
+            }
+        }
+    }while(verifica == 1);
+}
+
+void insereGravLevel(noArv *novo){
+    int verifica;
+    do
+    {
+        novo -> gravLevel = 1;
+        verifica = 0;
+
+        printf("\n  [03/03] GRAVIDADE DO INCIDENTE\n");
+        printf("  [1] Baixa gravidade\n");
+        printf("  [2] Média gravidade\n");
+        printf("  [3] Alta gravidade\n");
+        printf("\n  > Informe a gravidade (1 a 3): ");
+
+        scanf("%d",&novo -> gravLevel);
+        limpar_buffer();
+
+        if(novo -> gravLevel < 1 || novo -> gravLevel > 3)
+        {
+            verifica = 1;
+            printf("\n  [ERRO] Gravidade inválida. Escolha um valor entre 1 e 3.\n");
+            pause();
+        }
+    }while(verifica == 1);
+}
+
+
+//Cadastro e edição
+void cadastroInc(Eqp *hash[], Arv *raiz){
+    int verifica,escolha;
+    noArv *novo = (noArv*)malloc(sizeof(noArv));
+    novo -> esq = NULL;
+    novo -> dir = NULL;
+
+    insereNumIdemInc(raiz,novo);
+    insereCodeEqp(hash,novo);
+    insereGravLevel(novo);
+
+    pause();
+    do
+    {
+        verifica = 0;
+        escolha = -1;
+
+        printf("\n");
+        printf("  ╔═══════════════════════════════════════════════════════╗\n");
+        printf("  ║                                                       ║\n");
+        printf("  ║                   NOVO INCIDENTE                      ║\n");
+        printf("  ║         Confira os dados antes de confirmar           ║\n");
+        printf("  ║                                                       ║\n");
+        printf("  ╠═══════════════════════════════════════════════════════╣\n");
+        printf("  ║  Número de identificação: %-28d║\n", novo -> numIdem);
+        printf("  ║  Código do equipamento : %-28d║\n", novo -> codeEqpArv);
+        printf("  ║  Nível de gravidade    : %-28d║\n", printaGrav(novo -> gravLevel));
+        printf("  ╠═══════════════════════════════════════════════════════╣\n");
+        printf("  ║  [1]  Confirmar cadastro                              ║\n");
+        printf("  ║  [2]  Editar informações do incidente                 ║\n");
+        printf("  ║  [3]  Cancelar cadastro                               ║\n");
+        printf("  ╚═══════════════════════════════════════════════════════╝\n");
+        printf("\n  >> Opção escolhida: ");
+        scanf("%d",&escolha);
+        limpar_buffer();
+
+        switch(escolha)
+        {
+            case 1:
+                insereHash(hash,novo);
+                printf("\n  [OK] Solicitação cadastrada com sucesso.\n");
+                pause();
+                break;
+
+            case 2:
+                pause();
+                editaInfoEqp(hash,novo);
+                verifica = 1;
+                break;
+
+            case 3:
+                free(novo);
+                printf("\n  [AVISO] Solicitação cancelada.\n");
+                pause();
+                break;
+
+            default:
+                printf("\n  [ERRO] Opção inválida. Escolha entre 1 e 3.\n");
+                pause();
+                verifica = 1;
+                break;
+        }
+    }while(verifica == 1);
 }
 
 #endif // ARVORE_H_INCLUDED

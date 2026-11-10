@@ -19,10 +19,16 @@ typedef struct baseArv{
     noArv *raiz;
 }Arv;
 
+typedef struct listaIDs{
+    int ID;
+    struct listaIDs *prox;
+}IDs;
+
 typedef struct infosEquipamento{
     int codeEqp;
     char nicknameEqp[11];
     struct infosEquipamento *prox;
+    IDs *inicioID;
 }Eqp;
 
 
@@ -63,77 +69,6 @@ char *printaGrav(int grav)
 
         case 3:
             return "alta";
-    }
-}
-
-
-//INSERIR NA ARVORE
-int arvVazia(Arv *p){
-    if(p -> raiz == NULL){
-        return 1;
-    }
-    return 0;
-}
-
-noArv *auxInsereArv(Arv *arvore, noArv *novo){
-    noArv *pai = arvore -> raiz;
-
-    if(arvVazia(arvore)){
-        return novo;
-    }
-
-    while(1){
-        if(novo -> numIdem > pai -> numIdem){
-            if(pai -> dir == NULL){
-                pai -> dir = novo;
-                return arvore -> raiz;
-            }
-            else{
-                pai = pai -> dir;
-            }
-        }
-        else{
-            if(pai -> esq == NULL){
-                pai -> esq = novo;
-                return arvore -> raiz;
-            }
-            else{
-                pai = pai -> esq;
-            }
-        }
-    }
-}
-
-int insereArv(Arv *arv, noArv *novo){
-    int boolean;
-    arv -> raiz = auxInsereArv(arv, novo,&boolean);
-    return boolean;
-}
-
-int confereNumIdemArv(Arv *p,int code){
-    noArv *pai = p -> raiz;
-
-    if(pai == NULL)
-    {
-        return 0;
-    }
-
-    while(1){
-        if(pai -> numIdem == code){
-            return 1;
-        }
-        if(pai -> numIdem > code){
-            if(pai -> esq == NULL){
-                return 0;
-            }
-            pai = pai -> esq;
-        }
-        else{
-            if(pai -> dir == NULL){
-                return 0;
-            }
-            pai = pai -> dir;
-        }
     }
 }
 
@@ -288,6 +223,7 @@ void cadastroEqp(Eqp *hash[]){
 
     Eqp *novo = (Eqp*)malloc(sizeof(Eqp));
     novo -> prox = NULL;
+    novo -> inicioID = NULL;
 
     insereNumIdem(hash,novo);
     insereNicknameEqp(hash,novo);
@@ -349,17 +285,17 @@ void cadastroEqp(Eqp *hash[]){
 
 //REGISTRO DE INCIDENTE
 //Árvore
-int arvVazia(Arv *p){
-    if(p -> raiz == NULL){
+int arvVazia(Arv *L){
+    if(L -> raiz == NULL){
         return 1;
     }
     return 0;
 }
 
-noArv *auxInsereArv(Arv *arvore, noArv *novo){
-    noArv *pai = arvore -> raiz;
+noArv *auxInsereArv(Arv *L, noArv *novo){
+    noArv *pai = L -> raiz;
 
-    if(arvVazia(arvore)){
+    if(arvVazia(L)){
         return novo;
     }
 
@@ -367,7 +303,7 @@ noArv *auxInsereArv(Arv *arvore, noArv *novo){
         if(novo -> numIdem > pai -> numIdem){
             if(pai -> dir == NULL){
                 pai -> dir = novo;
-                return arvore -> raiz;
+                return L -> raiz;
             }
             else{
                 pai = pai -> dir;
@@ -376,7 +312,7 @@ noArv *auxInsereArv(Arv *arvore, noArv *novo){
         else{
             if(pai -> esq == NULL){
                 pai -> esq = novo;
-                return arvore -> raiz;
+                return L -> raiz;
             }
             else{
                 pai = pai -> esq;
@@ -385,12 +321,12 @@ noArv *auxInsereArv(Arv *arvore, noArv *novo){
     }
 }
 
-void insereArv(Arv *arv, noArv *novo){
-    arv -> raiz = auxInsereArv(arv, novo,&boolean);
+void insereArv(Arv *L, noArv *novo){
+    L -> raiz = auxInsereArv(L,novo);
 }
 
-int confereNumIdemArv(Arv *p,int code){
-    noArv *pai = p -> raiz;
+int confereNumIdemArv(Arv *L,int code){
+    noArv *pai = L -> raiz;
 
     if(pai == NULL)
     {
@@ -418,7 +354,7 @@ int confereNumIdemArv(Arv *p,int code){
 
 
 //inserção de informações
-void insereNumIdemInc(Arv *pai, noArv *novo){
+void insereNumIdemInc(Arv *L, noArv *novo){
     int entrada,verifica;
     do
     {
@@ -440,7 +376,7 @@ void insereNumIdemInc(Arv *pai, noArv *novo){
         else
         {
             novo -> numIdem = entrada;
-            if(confereNumIdemArv(pai,novo -> numIdem))
+            if(confereNumIdemArv(L,novo -> numIdem))
             {
                 verifica = 1;
                 printf("\n  [ERRO] Código já cadastrado.\n");
@@ -510,13 +446,97 @@ void insereGravLevel(noArv *novo){
 
 
 //Cadastro e edição
-void cadastroInc(Eqp *hash[], Arv *raiz){
+void insereIDHash(Eqp *hash[],noArv *novo){
+    IDs *novoID = (IDs*)malloc(sizeof(IDs));
+    novoID -> prox = NULL;
+    novoID -> ID = novo -> numIdem;
+
+    int pos = funcHash(novo -> codeEqpArv);
+    Eqp *aux = hash[pos];
+
+    while(aux -> codeEqp != novo -> codeEqpArv){
+        aux = aux -> prox;
+    }
+
+    IDs *aux2 = aux -> inicioID;
+
+    if(aux2 == NULL){
+        aux -> inicioID = novoID;
+    }
+    else{
+        while(aux2 -> prox != NULL){
+            aux2 = aux2 -> prox;
+        }
+        aux2 -> prox = novoID;
+    }
+}
+
+void editaInfoInc(Eqp *hash[],Arv *L,noArv *novo)
+{
+    int escolha, verifica = 0;
+
+    do
+    {
+        escolha = -1;
+        printf("\n");
+        printf("  ╔══════════════════════════════════════════════════════╗\n");
+        printf("  ║                                                      ║\n");
+        printf("  ║              EDITAR DADOS DO INCIDENTE               ║\n");
+        printf("  ║         Selecione o campo que deseja editar          ║\n");
+        printf("  ║                                                      ║\n");
+        printf("  ╠══════════════════════════════════════════════════════╣\n");
+        printf("  ║    [1]  Número de identificação                      ║\n");
+        printf("  ║    [2]  Código do equipamento                        ║\n");
+        printf("  ║    [3]  Nível de gravidade                           ║\n");
+        printf("  ╠══════════════════════════════════════════════════════╣\n");
+        printf("  ║    [0]  Retornar                                     ║\n");
+        printf("  ╚══════════════════════════════════════════════════════╝\n");
+        printf("\n  >> Opção escolhida: ");
+
+        scanf("%d",&escolha);
+        limpar_buffer();
+
+        pause();
+
+        switch(escolha)
+        {
+            case 1:
+                insereNumIdemInc(L,novo);
+                printf("\n  [OK] Número de identificação editado com sucesso.\n");
+                pause();
+                break;
+
+            case 2:
+                insereCodeEqp(hash,novo);
+                printf("\n  [OK] Nome(apelido) editado com sucesso.\n");
+                pause();
+                break;
+
+            case 3:
+                insereGravLevel(novo);
+                printf("\n  [OK] Gravidade editada com sucesso.\n");
+                pause();
+                break;
+
+            case 0:
+                verifica = 1;
+                break;
+
+            default:
+                printf("\n  [ERRO] Opção inválida. Escolha um valor entre 0 e 3.\n");
+                pause();
+                break;
+        }
+    }while(verifica == 0);
+}
+
+void cadastroInc(Eqp *hash[], Arv *L){
     int verifica,escolha;
     noArv *novo = (noArv*)malloc(sizeof(noArv));
     novo -> esq = NULL;
     novo -> dir = NULL;
 
-    insereNumIdemInc(raiz,novo);
+    insereNumIdemInc(L,novo);
     insereCodeEqp(hash,novo);
     insereGravLevel(novo);
 
@@ -534,8 +554,8 @@ void cadastroInc(Eqp *hash[], Arv *raiz){
         printf("  ║                                                       ║\n");
         printf("  ╠═══════════════════════════════════════════════════════╣\n");
         printf("  ║  Número de identificação: %-28d║\n", novo -> numIdem);
-        printf("  ║  Código do equipamento : %-28d║\n", novo -> codeEqpArv);
-        printf("  ║  Nível de gravidade    : %-28d║\n", printaGrav(novo -> gravLevel));
+        printf("  ║  Código do equipamento  : %-28d║\n", novo -> codeEqpArv);
+        printf("  ║  Nível de gravidade     : %-28s║\n", printaGrav(novo -> gravLevel));
         printf("  ╠═══════════════════════════════════════════════════════╣\n");
         printf("  ║  [1]  Confirmar cadastro                              ║\n");
         printf("  ║  [2]  Editar informações do incidente                 ║\n");
@@ -548,14 +568,15 @@ void cadastroInc(Eqp *hash[], Arv *raiz){
         switch(escolha)
         {
             case 1:
-                insereHash(hash,novo);
+                insereArv(L,novo);
+                insereIDHash(hash,novo);
                 printf("\n  [OK] Solicitação cadastrada com sucesso.\n");
                 pause();
                 break;
 
             case 2:
                 pause();
-                editaInfoEqp(hash,novo);
+                editaInfoInc(hash,L,novo);
                 verifica = 1;
                 break;
 

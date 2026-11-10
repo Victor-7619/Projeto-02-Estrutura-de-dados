@@ -30,8 +30,12 @@ void menu(Arv *L, Eqp *hash[]){
                 pause();
                 cadastroEqp(hash);
                 break;
+
             case 2:
+                pause();
+                cadastroInc(hash,L);
                 break;
+
             case 3:
                 break;
             case 4:

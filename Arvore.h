@@ -40,7 +40,7 @@ Arv *criaArv() {
 }
 
 void inicializaHash(Eqp *hash[]){
-    for(int i = 0; i < 101; i++){
+    for(int i = 0; i < 43; i++){
         hash[i] = NULL;
     }
 }
@@ -86,7 +86,7 @@ int confereLista(Eqp *inicio,int codeEqp){
 }
 
 int funcHash(int code){
-    return code%101;
+    return code%43;
 }
 
 void insereHash(Eqp *hash[], Eqp *novo){
@@ -594,5 +594,52 @@ void cadastroInc(Eqp *hash[], Arv *L){
         }
     }while(verifica == 1);
 }
+
+//IMPRESSÃO SOLICITAÇÃO E INCIDENTES
+
+noArv *buscaArv(Arv *L, int ID) {
+    noArv *aux = L -> raiz;
+    while(aux != NULL) {
+        if(aux -> numIdem != ID) {
+            if(aux -> numIdem < ID) {
+                aux = aux -> dir;
+            }
+            else {
+                aux = aux -> esq;
+            }
+        }
+        else {
+            return aux;
+        }
+    }
+    return NULL;
+}
+
+void imprimeHash(Eqp *hash[], Arv *L) {
+    noArv *aux;
+    Eqp *auxEqp;
+    IDs *auxID;
+    for(int i = 0; i<43;i++) {
+            auxEqp = hash[i];
+            while(auxEqp != NULL) {
+                    printf("código de identificação do equipamento: %d \n" "Nome do equipamento: %s \n",auxEqp -> codeEqp, auxEqp -> nicknameEqp);
+                    auxID = auxEqp->inicioID;
+                    while(auxID != NULL) {
+                        aux = buscaArv(L, auxID -> ID);
+                        if(aux != NULL) {
+                            printf("Numero de identificação do incidente: %d \n" "gravidade: %s \n",aux -> numIdem, printaGrav(aux->gravLevel));
+                            printf("\n");
+                        }
+                        auxID = auxID->prox;
+                    }
+                auxEqp = auxEqp -> prox;
+            }
+    }
+}
+
+
+
+
+
 
 #endif // ARVORE_H_INCLUDED

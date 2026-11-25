@@ -471,8 +471,7 @@ void insereIDHash(Eqp *hash[],noArv *novo){
     }
 }
 
-void editaInfoInc(Eqp *hash[],Arv *L,noArv *novo)
-{
+void editaInfoInc(Eqp *hash[],Arv *L,noArv *novo){
     int escolha, verifica = 0;
 
     do
@@ -704,10 +703,208 @@ void VerincidentesVazio(Arv *L) {
     pause();
 }
 
+void buscaeImp(Eqp * hash[], Arv *L){
 
+}
 
+void removerIDhash(Eqp * hash[], int inc,int code) {
 
+    int pos = funcHash(code);
+    Eqp *aux = hash[pos];
+    int *seg;
+    int *ant;
+    int ver=0;
+    while(ver == 0) {
+        if(aux -> codeEqp == code) {
+            seg = aux -> inicioID;
+            ant = aux;
 
+            while(aux != NULL && aux2 -> ID != inc) {
+                ant = seg;
+                seg = seg -> prox;
+            }
+            if(ant == codeEqp) {
+                aux -> inicioID = seg;
+            }
+            else {
+                ant -> prox = aux -> prox
+            }
+            free(aux);
+            ver = 1;
+        }
+        aux = aux -> prox;
+    }
+}
+
+noArv* remover_aux(noArv *pai, int num) {
+    if(pai == NULL) {
+        printf("\n  \n não encontrado");
+    }
+    else {
+        if(num > pai -> numIdem) {
+            pai -> dir = remover_aux(pai -> dir, num);
+        }
+        else {
+            if(num < pai -> numIdem) {
+                pai -> esq = remover_aux(pai -> esq, num);
+            }
+            else {
+                if (pai -> dir == NULL && pai -> esq == NULL)
+                {
+                    free(pai);
+                    pai  = NULL;
+                }
+                else {
+                    if(pai -> esq == NULL) {
+                        noArv *aux = pai;
+                        pai = pai -> dir;
+                        free(aux);
+                    }
+                    else {
+                        if(pai -> dir == NULL )
+                        {
+                            noArv *aux = pai;
+                            pai = pai -> esq;
+                            free(aux);
+                        }
+                        else {
+                            if(pai -> dir == NULL && pai -> esq == NULL) {
+                                free(pai);
+                                pai = NULL;
+                            }
+                            else {
+                                if(pai -> esq == NULL) {
+                                    noArv *aux = pai;
+                                    pai = pai -> dir;
+                                    free(aux);
+                                }
+                                else {
+                                    if(pai -> dir == NULL) {
+                                        noArv *aux = pai;
+                                        pai = pai -> esq;
+                                        free(aux);
+                                    }
+                                    else {
+                                        if( pai -> dir == NULL && pai -> esq == NULL)
+                                        {
+                                            free(pai);
+                                            pai = NULL;
+                                        }
+                                        else {
+                                            if(pai -> esq == NULL) {
+                                                noArv *aux = pai;
+                                                pai = pai -> dir;
+                                                free(aux);
+                                            }
+                                            else {
+                                                if(pai -> dir == NULL) {
+                                                    noArv*aux = pai;
+                                                    pai = pai -> esq;
+                                                    free(aux);
+                                                }
+                                                else {
+                                                    noArv *aux;
+                                                    aux = pai -> esq;
+                                                    while (aux -> dir != NULL){
+                                                        aux = aux -> dir;
+                                                    }
+                                                    pai -> numIdem = aux -> numIdem;
+                                                    aux -> numIdem = num;
+                                                    pai -> esq = remover_aux(pai -> esq, num);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return pai;
+}
+
+Arv* remover(Arv *L, int num) {
+    noArv *aux = L -> raiz;
+    if(aux -> numIdem == num && aux -> dir == NULL && aux -> esq == NULL) {
+        free(aux);
+        free(L);
+        return NULL;
+    }
+    L -> raiz = remover_aux(L -> raiz, num);
+    return L;
+}
+
+void chamarRemoc(Arv *L){
+    int num;
+    int escolha;
+
+    if(!arvVazia(L)) {
+        do{
+            printf("\n");
+            printf("  ╔══════════════════════════════════════════════════════╗\n");
+            printf("  ║                                                      ║\n");
+            printf("  ║                 REMOÇÃO DE INCIDENTE                 ║\n");
+            printf("  ║                                                      ║\n");
+            printf("  ╚══════════════════════════════════════════════════════╝\n");
+            printf("\n  >> Digite um código de incidente: ");
+            printf("\n  >> Digite 0 para sair: ");
+            scanf("%d",&num);
+
+            if(num == 0) {
+                system("cls");
+                break;
+            }
+
+            if(confereNumIdemArv(L,num)) {
+                system("cls");
+                printf("\n");
+                printf("  ╔══════════════════════════════════════════════════════╗\n");
+                printf("  ║ Incidente: %-41d ║\n", num);
+                printf("  ╠══════════════════════════════════════════════════════╣\n");
+                printf("  ║ [1] Confirmar remoção  %-29d ║\n", num);
+                printf("  ║ [2] Cancelar remoção   %-29d ║\n", num);
+                printf("  ╚══════════════════════════════════════════════════════╝\n  ");
+                scanf("%d",&escolha);
+
+                switch(escolha) {
+
+                    case 1:
+                        L = remover(L,num);
+                        printf("\n  >> Incidente removido com sucesso");
+                        pause();
+                        system("cls");
+                        break;
+
+                    case 2:
+                        printf("\n  >> Remoção cancelada");
+                        pause();
+                        system("cls");
+                        break;
+
+                    default:
+                        printf("\n  [ERRO] Opção inválida. Escolha um valor entre 1 e 2.\n");
+                        pause();
+                        break;
+                }
+
+            }
+            else {
+                printf("\n  >> Incidente não encontrado");
+                pause();
+            }
+
+        }while(1);
+    }
+    else {
+        printf("  ╔══════════════════════════════════════════════════════╗\n");
+        printf("  ║              NÃO HÁ INCIDENTES CADASTRADOS           ║\n");
+        printf("  ╚══════════════════════════════════════════════════════╝\n");
+        pause();
+    }
+}
 
 
 

@@ -45,6 +45,8 @@ void menu(Arv *L, Eqp *hash[]){
                 VerincidentesVazio(L);
                 break;
             case 5:
+                pause();
+                chamarRemoc(L);
                 break;
             case 6:
                 break;

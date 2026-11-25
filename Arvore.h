@@ -595,10 +595,11 @@ void cadastroInc(Eqp *hash[], Arv *L){
     }while(verifica == 1);
 }
 
-//IMPRESSÃO SOLICITAÇÃO E INCIDENTES
 
+//IMPRESSÃO SOLICITAÇÃO E INCIDENTES
 noArv *buscaArv(Arv *L, int ID) {
     noArv *aux = L -> raiz;
+
     while(aux != NULL) {
         if(aux -> numIdem != ID) {
             if(aux -> numIdem < ID) {
@@ -620,45 +621,43 @@ void imprimeHash(Eqp *hash[], Arv *L) {
     Eqp *auxEqp;
     IDs *auxID;
 
-        printf("\n");
-        printf("  ╔══════════════════════════════════════════════════════╗\n");
-        printf("  ║                                                      ║\n");
-        printf("  ║             EQUIPAMENTOS E INCIDENTES                ║\n");
-        printf("  ║                                                      ║\n");
-        printf("  ╚══════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf("  ┌──────────────────────────────────────────────────────┐\n");
+    printf("  │                                                      │\n");
+    printf("  │              EQUIPAMENTOS E INCIDENTES               │\n");
+    printf("  │                                                      │\n");
+    printf("  └──────────────────────────────────────────────────────┘\n");
 
     for(int i = 0; i<43;i++) {
             auxEqp = hash[i];
             while(auxEqp != NULL) {
 
-                    printf("  ╔══════════════════════════════════════════════════════╗\n");
-                    printf("  ║ Código do equipamento: %-29d ║\n", auxEqp->codeEqp);
-                    printf("  ║ Nome do equipamento: %-31.31s ║\n", auxEqp->nicknameEqp);
-                    printf("  ╠══════════════════════════════════════════════════════╣\n");
+            printf("\n");
+            printf("  ┌──────────────────────────────────────────────────────┐\n");
+            printf("  │ EQUIPAMENTO %04d - %-33s │\n", auxEqp->codeEqp, auxEqp->nicknameEqp);
+            printf("  ├───────────────────────────┬──────────────────────────┤\n");
+            printf("  │ %-25s │ %-24s │\n", "ID DO INCIDENTE", "GRAVIDADE");
+            printf("  ├───────────────────────────┼──────────────────────────┤\n");
 
                     auxID = auxEqp->inicioID;
 
                     if(auxID == NULL) {
-                        printf("  ╔══════════════════════════════════════════════════════╗\n");
-                        printf("  ║                                                      ║\n");
-                        printf("  ║            NÃO HÁ INCIDENTES RELACIONADOS            ║\n");
-                        printf("  ║                                                      ║\n");
-                        printf("  ╚══════════════════════════════════════════════════════╝\n");
+                        printf("  │ %-25s │ %-24s │\n", "Nenhum incidente", "-");
                     }
                     while(auxID != NULL) {
                         aux = buscaArv(L, auxID -> ID);
+
                         if(aux != NULL) {
-                            printf("  ║ Número de identificação do incidente: %-14d ║\n", aux->numIdem);
-                            printf("  ║ Gravidade: %-41.41s ║\n", printaGrav(aux->gravLevel));
+                            printf("  │ %-25d │ %-24s │\n", aux->numIdem, printaGrav(aux->gravLevel));
 
                         }
                         auxID = auxID->prox;
                     }
-                        printf("  ╚══════════════════════════════════════════════════════╝\n");
+                        printf("  └───────────────────────────┴──────────────────────────┘\n");
                 auxEqp = auxEqp -> prox;
             }
     }
-
+    pause();
 }
 
 void imprimeIncCresc(Arv *L) {
@@ -675,130 +674,35 @@ void imprimeArvCresc(noArv *aux) {
     }
     imprimeArvCresc(aux->esq);
 
-    printf("  ╔══════════════════════════════════════════════════════╗\n");
-    printf("  ║ Incidente: %-41d ║\n", aux->numIdem);
-    printf("  ╠══════════════════════════════════════════════════════╣\n");
-    printf("  ║ Equipamento: %-39d ║\n", aux->codeEqpArv);
-    printf("  ╠══════════════════════════════════════════════════════╣\n");
-    printf("  ║ Gravidade: %-41s ║\n", printaGrav(aux->gravLevel));
-    printf("  ╚══════════════════════════════════════════════════════╝\n");
+    printf("  │ %-16d │ %-16d │ %-14s │\n", aux->numIdem, aux->codeEqpArv, printaGrav(aux->gravLevel));
 
     imprimeArvCresc(aux->dir);
 }
 
 void imprimeTxtInci() {
     printf("\n");
-    printf("  ╔══════════════════════════════════════════════════════╗\n");
-    printf("  ║                                                      ║\n");
-    printf("  ║                      INCIDENTES                      ║\n");
-    printf("  ║                                                      ║\n");
-    printf("  ╚══════════════════════════════════════════════════════╝\n");
+    printf("  ┌──────────────────────────────────────────────────────┐\n");
+    printf("  │                                                      │\n");
+    printf("  │                INCIDENTES CADASTRADOS                │\n");
+    printf("  │                                                      │\n");
+    printf("  └──────────────────────────────────────────────────────┘\n");
+
+    printf("  ┌──────────────────┬──────────────────┬────────────────┐\n");
+    printf("  │ %-16s │ %-16s │ %-14s │\n", "ID DO INCIDENTE", "EQUIPAMENTO", "GRAVIDADE");
+    printf("  ├──────────────────┼──────────────────┼────────────────┤\n");
 }
 
 void VerincidentesVazio(Arv *L) {
    if(L->raiz == NULL) {
-    printf("  ╔══════════════════════════════════════════════════════╗\n");
-    printf("  ║              NÃO HÁ INCIDENTES CADASTRADOS           ║\n");
-    printf("  ╚══════════════════════════════════════════════════════╝\n");
+    printf("\n  [AVISO] Nenhum incidente cadastrado.\n");
     }
     else {
         imprimeTxtInci();
         imprimeArvCresc(L->raiz);
+        printf("  └──────────────────┴──────────────────┴────────────────┘\n");
     }
+    pause();
 }
-
-void excluirIncidente(Arv *L, int exinc) {
-    noArv *aux = L -> raiz;
-    noArv *aux1 = NULL;
-    noArv *aux2;
-
-    while(aux != NULL) {
-        if(exinc != aux->numIdem) {
-            aux1 = aux;
-            if(exinc > aux->numIdem) {
-                aux = aux -> dir;
-            }
-            else {
-                aux = aux -> esq;
-            }
-        }
-        else {
-            //nóR sem filhos
-            if(aux -> dir == NULL && aux -> esq == NULL) {
-                //nóR a direita
-                if(aux1 -> dir == aux) {
-                    aux1 -> dir = NULL;
-                    free(aux);
-                    aux = NULL;
-                }
-                //nóR a esquerda
-                else {
-                    aux1 -> esq = NULL;
-                    free(aux);
-                    aux = NULL;
-                }
-            }
-            else {
-                // nóR a direita
-                if(aux1 -> dir == aux) {
-                    // nó filho a esquerda
-                    if(aux -> dir == NULL) {
-                        aux1 -> dir = aux -> esq;
-                        free(aux);
-                        aux = NULL;
-                    }
-                    else {
-                        // nó filho a direita
-                        if(aux -> esq == NULL) {
-                            aux1 -> dir = aux -> dir;
-                            free(aux);
-                            aux = NULL;
-                        }
-                        //aux a dir do pai // tem dois filhos
-                        else {
-
-                        }
-                    }
-                }
-                else {
-                    //nóR a esquerda
-                    if(aux1 -> esq == aux) {
-                        //nó filho a esquerda / sem filho direito
-                        if(aux -> dir == NULL) {
-                            aux1 -> esq = aux -> esq;
-                            free(aux);
-                            aux = NULL;
-                        }
-                        //nó filho a direita
-                        else {
-                            // sem filho esquerdo
-                            if(aux -> esq == NULL) {
-                                aux1 -> esq = aux -> dir;
-                                free(aux);
-                                aux = NULL;
-                            }
-                            //aux a esq do pai // tem dois filhos
-                            else {
-                                aux1 -> esq = aux -> dir;
-                                aux2 = aux -> dir;
-
-                                while(aux -> esq > aux2) {
-                                    aux2 = aux2 -> dir;
-                                }
-                                while(aux2 -> esq != NULL) {
-                                    aux2 = aux2 -> esq;
-                                }
-                                aux2 -> esq = aux -> esq;
-                                free(aux);
-                                aux = NUL;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
 
 
 

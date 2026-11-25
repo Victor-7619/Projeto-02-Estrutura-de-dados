@@ -38,6 +38,7 @@ void menu(Arv *L, Eqp *hash[]){
 
             case 3:
                 pause();
+                imprimeHashIncs(hash,L);
                 imprimeHash(hash,L);
                 break;
             case 4:

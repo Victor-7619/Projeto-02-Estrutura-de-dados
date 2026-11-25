@@ -75,14 +75,14 @@ char *printaGrav(int grav)
 
 //CADASTRO DE EQUIPAMENTO
 //hash
-int confereLista(Eqp *inicio,int codeEqp){
+Eqp *confereListaEqp(Eqp *inicio,int codeEqp){
     while(inicio != NULL){
         if(inicio -> codeEqp == codeEqp){
-            return 1;
+            return inicio;
         }
         inicio = inicio -> prox;
     }
-    return 0;
+    return NULL;
 }
 
 int funcHash(int code){
@@ -103,13 +103,10 @@ void insereHash(Eqp *hash[], Eqp *novo){
 
 
 //inserção de informações
-int confereNumIdemHash(Eqp *hash[], int code){
+Eqp *confereNumIdemHash(Eqp *hash[], int code){
     int pos = funcHash(code);
 
-    if(confereLista(hash[pos],code)){
-        return 1;
-    }
-    return 0;
+    return confereListaEqp(hash[pos],code);
 }
 
 void insereNumIdem(Eqp *hash[], Eqp *novo){
@@ -134,7 +131,7 @@ void insereNumIdem(Eqp *hash[], Eqp *novo){
         else
         {
             novo -> codeEqp = entrada;
-            if(confereNumIdemHash(hash,novo -> codeEqp))
+            if(confereNumIdemHash(hash,novo -> codeEqp) != NULL)
             {
                 verifica = 1;
                 printf("\n  [ERRO] Código já cadastrado.\n");
@@ -409,7 +406,7 @@ void insereCodeEqp(Eqp *hash[], noArv *novo){
         else
         {
             novo -> codeEqpArv = entrada;
-            if(!confereNumIdemHash(hash,novo -> codeEqpArv))
+            if(confereNumIdemHash(hash,novo -> codeEqpArv) == NULL)
             {
                 verifica = 1;
                 printf("\n  [ERRO] Equipamento não encontrado.\n");
@@ -707,13 +704,13 @@ void buscaeImp(Eqp * hash[], Arv *L){
 
 }
 
-void removerIDhash(Eqp * hash[], int inc,int code) {
+/*void removerIDhash(Eqp * hash[], int inc,int code) {
 
     int pos = funcHash(code);
     Eqp *aux = hash[pos];
-    int *seg;
-    int *ant;
-    int ver=0;
+    IDs *seg;
+    IDs *ant;
+    int ver = 0;
     while(ver == 0) {
         if(aux -> codeEqp == code) {
             seg = aux -> inicioID;
@@ -734,7 +731,7 @@ void removerIDhash(Eqp * hash[], int inc,int code) {
         }
         aux = aux -> prox;
     }
-}
+}*/
 
 noArv* remover_aux(noArv *pai, int num) {
     if(pai == NULL) {
@@ -906,7 +903,36 @@ void chamarRemoc(Arv *L){
     }
 }
 
+void imprimeHashIncs(Eqp *hash[], Arv *L){
+    int entrada,verifica;
+    do
+    {
+        entrada = 1;
+        verifica = 0;
 
+        printf("\n  [02/03] NÚMERO DE IDENTIFICAÇÃO DO EQUIPAMENTO RELACIONADO\n");
+        printf("  > Informe o código (1000 a 9999: ");
+
+        scanf("%d",&entrada);
+        limpar_buffer();
+
+        if(entrada < 1000 || entrada > 9999)
+        {
+            verifica = 1;
+            printf("\n  [ERRO] O código deve conter 4 dígitos.\n");
+            pause();
+        }
+        else
+        {
+            if(confereNumIdemHash(hash,entrada) == NULL)
+            {
+                verifica = 1;
+                printf("\n  [ERRO] Equipamento não encontrado.\n");
+                pause();
+            }
+        }
+    }while(verifica == 1);
+}
 
 
 

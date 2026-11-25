@@ -38,6 +38,7 @@ void menu(Arv *L, Eqp *hash[]){
 
             case 3:
                 pause();
+                imprimeHashIncs(hash,L);
                 imprimeHash(hash,L);
                 break;
             case 4:
@@ -45,6 +46,8 @@ void menu(Arv *L, Eqp *hash[]){
                 VerincidentesVazio(L);
                 break;
             case 5:
+                pause();
+                chamarRemoc(L);
                 break;
             case 6:
                 break;

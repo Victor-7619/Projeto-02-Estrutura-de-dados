@@ -41,6 +41,8 @@ void menu(Arv *L, Eqp *hash[]){
                 imprimeHash(hash,L);
                 break;
             case 4:
+                pause();
+                VerincidentesVazio(L);
                 break;
             case 5:
                 break;

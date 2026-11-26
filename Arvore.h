@@ -171,19 +171,18 @@ void editaInfoEqp(Eqp *hash[],Eqp *novo)
     {
         escolha = -1;
         printf("\n");
-        printf("  ╔══════════════════════════════════════════════════════╗\n");
-        printf("  ║                                                      ║\n");
-        printf("  ║             EDITAR DADOS DO EQUIPAMENTO              ║\n");
-        printf("  ║         Selecione o campo que deseja editar          ║\n");
-        printf("  ║                                                      ║\n");
-        printf("  ╠══════════════════════════════════════════════════════╣\n");
-        printf("  ║    [1]  Número de identificação                      ║\n");
-        printf("  ║    [2]  Nome (apelido)                               ║\n");
-        printf("  ╠══════════════════════════════════════════════════════╣\n");
-        printf("  ║    [0]  Retornar                                     ║\n");
-        printf("  ╚══════════════════════════════════════════════════════╝\n");
+        printf("  ┌──────────────────────────────────────────────────────┐\n");
+        printf("  │                                                      │\n");
+        printf("  │             EDITAR DADOS DO EQUIPAMENTO              │\n");
+        printf("  │         Selecione o campo que deseja editar          │\n");
+        printf("  │                                                      │\n");
+        printf("  ├──────────────────────────────────────────────────────┤\n");
+        printf("  │    [1] Número de identificação                       │\n");
+        printf("  │    [2] Nome (apelido)                                 │\n");
+        printf("  ├──────────────────────────────────────────────────────┤\n");
+        printf("  │    [0] Retornar                                       │\n");
+        printf("  └──────────────────────────────────────────────────────┘\n");
         printf("\n  >> Opção escolhida: ");
-
         scanf("%d",&escolha);
         limpar_buffer();
 
@@ -229,22 +228,22 @@ void cadastroEqp(Eqp *hash[]){
     do
     {
         verifica = 0;
-        escolha = -1;
+        escolha = 1;
 
         printf("\n");
-        printf("  ╔═══════════════════════════════════════════════════════╗\n");
-        printf("  ║                                                       ║\n");
-        printf("  ║                   NOVA INSERÇÃO                       ║\n");
-        printf("  ║         Confira os dados antes de confirmar           ║\n");
-        printf("  ║                                                       ║\n");
-        printf("  ╠═══════════════════════════════════════════════════════╣\n");
-        printf("  ║  Número  de identificação:%-28d║\n", novo -> codeEqp);
-        printf("  ║  Nome (apelido)       :  %-28s ║\n", novo -> nicknameEqp);
-        printf("  ╠═══════════════════════════════════════════════════════╣\n");
-        printf("  ║  [1]  Confirmar cadastro                              ║\n");
-        printf("  ║  [2]  Editar Informações do equipamento               ║\n");
-        printf("  ║  [3]  Cancelar cadastro                               ║\n");
-        printf("  ╚═══════════════════════════════════════════════════════╝\n");
+        printf("  ┌──────────────────────────────────────────────────────┐\n");
+        printf("  │                                                      │\n");
+        printf("  │                    NOVA INSERÇÃO                     │\n");
+        printf("  │         Confira os dados antes de confirmar          │\n");
+        printf("  │                                                      │\n");
+        printf("  ├──────────────────────────────────────────────────────┤\n");
+        printf("  │  Número de identificação: %-26d │\n", novo->codeEqp);
+        printf("  │  Nome (apelido)         : %-26s │\n", novo->nicknameEqp);
+        printf("  ├──────────────────────────────────────────────────────┤\n");
+        printf("  │  [1]  Confirmar cadastro                             │\n");
+        printf("  │  [2]  Editar informações do equipamento              │\n");
+        printf("  │  [3]  Cancelar cadastro                              │\n");
+        printf("  └──────────────────────────────────────────────────────┘\n");
         printf("\n  >> Opção escolhida: ");
         scanf("%d",&escolha);
         limpar_buffer();
@@ -359,7 +358,7 @@ void insereNumIdemInc(Arv *L, noArv *novo){
         verifica = 0;
 
         printf("\n  [01/03] NÚMERO DE IDENTIFICAÇÃO DO INCIDENTE\n");
-        printf("  > Informe o código (10 a 99: ");
+        printf("  > Informe o código (10 a 99): ");
 
         scanf("%d",&entrada);
         limpar_buffer();
@@ -392,7 +391,7 @@ void insereCodeEqp(Eqp *hash[], noArv *novo){
         verifica = 0;
 
         printf("\n  [02/03] NÚMERO DE IDENTIFICAÇÃO DO EQUIPAMENTO RELACIONADO\n");
-        printf("  > Informe o código (1000 a 9999: ");
+        printf("  > Informe o código (1000 a 9999): ");
 
         scanf("%d",&entrada);
         limpar_buffer();
@@ -475,18 +474,18 @@ void editaInfoInc(Eqp *hash[],Arv *L,noArv *novo){
     {
         escolha = -1;
         printf("\n");
-        printf("  ╔══════════════════════════════════════════════════════╗\n");
-        printf("  ║                                                      ║\n");
-        printf("  ║              EDITAR DADOS DO INCIDENTE               ║\n");
-        printf("  ║         Selecione o campo que deseja editar          ║\n");
-        printf("  ║                                                      ║\n");
-        printf("  ╠══════════════════════════════════════════════════════╣\n");
-        printf("  ║    [1]  Número de identificação                      ║\n");
-        printf("  ║    [2]  Código do equipamento                        ║\n");
-        printf("  ║    [3]  Nível de gravidade                           ║\n");
-        printf("  ╠══════════════════════════════════════════════════════╣\n");
-        printf("  ║    [0]  Retornar                                     ║\n");
-        printf("  ╚══════════════════════════════════════════════════════╝\n");
+        printf("  ┌──────────────────────────────────────────────────────┐\n");
+        printf("  │                                                      │\n");
+        printf("  │              EDITAR DADOS DO INCIDENTE               │\n");
+        printf("  │         Selecione o campo que deseja editar          │\n");
+        printf("  │                                                      │\n");
+        printf("  ├──────────────────────────────────────────────────────┤\n");
+        printf("  │    [1]  Número de identificação                      │\n");
+        printf("  │    [2]  Código do equipamento                        │\n");
+        printf("  │    [3]  Nível de gravidade                           │\n");
+        printf("  ├──────────────────────────────────────────────────────┤\n");
+        printf("  │    [0]  Retornar                                     │\n");
+        printf("  └──────────────────────────────────────────────────────┘\n");
         printf("\n  >> Opção escolhida: ");
 
         scanf("%d",&escolha);
@@ -543,21 +542,21 @@ void cadastroInc(Eqp *hash[], Arv *L){
         escolha = -1;
 
         printf("\n");
-        printf("  ╔═══════════════════════════════════════════════════════╗\n");
-        printf("  ║                                                       ║\n");
-        printf("  ║                   NOVO INCIDENTE                      ║\n");
-        printf("  ║         Confira os dados antes de confirmar           ║\n");
-        printf("  ║                                                       ║\n");
-        printf("  ╠═══════════════════════════════════════════════════════╣\n");
-        printf("  ║  Número de identificação: %-28d║\n", novo -> numIdem);
-        printf("  ║  Código do equipamento  : %-28d║\n", novo -> codeEqpArv);
-        printf("  ║  Nível de gravidade     : %-28s║\n", printaGrav(novo -> gravLevel));
-        printf("  ╠═══════════════════════════════════════════════════════╣\n");
-        printf("  ║  [1]  Confirmar cadastro                              ║\n");
-        printf("  ║  [2]  Editar informações do incidente                 ║\n");
-        printf("  ║  [3]  Cancelar cadastro                               ║\n");
-        printf("  ╚═══════════════════════════════════════════════════════╝\n");
-        printf("\n  >> Opção escolhida: ");
+        printf("  ┌──────────────────────────────────────────────────────┐\n");
+        printf("  │                                                      │\n");
+        printf("  │                    NOVO INCIDENTE                    │\n");
+        printf("  │         Confira os dados antes de confirmar          │\n");
+        printf("  │                                                      │\n");
+        printf("  ├──────────────────────────────────────────────────────┤\n");
+        printf("  │  Número de identificação: %-26d │\n", novo->numIdem);
+        printf("  │  Código do equipamento  : %-26d │\n", novo->codeEqpArv);
+        printf("  │  Nível de gravidade     :  %-26s │\n", printaGrav(novo->gravLevel));
+        printf("  ├──────────────────────────────────────────────────────┤\n");
+        printf("  │  [1]  Confirmar cadastro                             │\n");
+        printf("  │  [2]  Editar informações do incidente                │\n");
+        printf("  │  [3]  Cancelar cadastro                              │\n");
+        printf("  └──────────────────────────────────────────────────────┘\n");
+
         scanf("%d",&escolha);
         limpar_buffer();
 
@@ -592,7 +591,7 @@ void cadastroInc(Eqp *hash[], Arv *L){
 }
 
 
-//IMPRESSÃO SOLICITAÇÃO E INCIDENTES
+//CONSULTAR EQP E SEUS INCIDENTES
 noArv *buscaArv(Arv *L, int ID) {
     noArv *aux = L -> raiz;
 
@@ -610,6 +609,77 @@ noArv *buscaArv(Arv *L, int ID) {
         }
     }
     return NULL;
+}
+
+void imprimeHashIncs(Eqp *hash[], Arv *L){
+    int entrada;
+    Eqp *auxEqp;
+    IDs *auxList;
+    noArv *auxArv;
+
+    do
+    {
+        entrada = 1;
+
+        printf("\n  [02/03] NÚMERO DE IDENTIFICAÇÃO DO EQUIPAMENTO A SER BUSCADO \n");
+        printf("  > Informe o código (1000 a 9999): ");
+
+        scanf("%d",&entrada);
+        limpar_buffer();
+
+        if(entrada < 1000 || entrada > 9999)
+        {
+            auxEqp = NULL;
+            printf("\n  [ERRO] O código deve conter 4 dígitos.\n");
+        }
+        else
+        {
+            auxEqp = confereNumIdemHash(hash,entrada);
+
+            if(auxEqp == NULL)
+            {
+                printf("\n  [ERRO] Equipamento não encontrado.\n");
+            }
+        }
+        pause();
+    }while(auxEqp == NULL);
+
+    printf("\n");
+    printf("  ┌──────────────────────────────────────────────────────┐\n");
+    printf("  │                                                      │\n");
+    printf("  │               CONSULTA DE EQUIPAMENTO                │\n");
+    printf("  │                                                      │\n");
+    printf("  └──────────────────────────────────────────────────────┘\n");
+    printf("\n");
+
+    printf("  ┌──────────────────────────────────────────────────────┐\n");
+    printf("  │ Código do equipamento: %-29d │\n", auxEqp->codeEqp);
+    printf("  │ Nome do equipamento: %-31s │\n", auxEqp->nicknameEqp);
+    printf("  ├──────────────────────────────────────────────────────┤\n");
+    printf("  │               INCIDENTES RELACIONADOS                │\n");
+
+    if(auxEqp -> inicioID == NULL){
+        printf("  ├──────────────────────────────────────────────────────┤\n");
+        printf("  │                                                      │\n");
+        printf("  │            Nenhum incidente relacionado.             │\n");
+        printf("  │                                                      │\n");
+        printf("  └──────────────────────────────────────────────────────┘\n");
+    }
+    else{
+        printf("  ├───────────────────────────┬──────────────────────────┤\n");
+        printf("  │ %-25s │ %-24s │\n", "ID DO INCIDENTE", "GRAVIDADE");
+        printf("  ├───────────────────────────┼──────────────────────────┤\n");
+
+        auxList = auxEqp -> inicioID;
+
+        while(auxList != NULL){
+            auxArv = buscaArv(L, auxList -> ID);
+
+            printf("  │ %-25d │ %-24s │\n", auxArv -> numIdem, printaGrav(auxArv -> gravLevel));
+            auxList = auxList -> prox;
+        }
+        printf("  └───────────────────────────┴──────────────────────────┘\n");
+    }
 }
 
 void imprimeHash(Eqp *hash[], Arv *L) {
@@ -653,8 +723,57 @@ void imprimeHash(Eqp *hash[], Arv *L) {
                 auxEqp = auxEqp -> prox;
             }
     }
-    pause();
 }
+
+void escolhaBuscaOuTodos(Eqp *hash[], Arv *L){
+
+    int escolha, verifica = 0;
+
+    do{
+        escolha = 1;
+
+        printf("\n");
+        printf("  ┌──────────────────────────────────────────────────────┐\n");
+        printf("  │                                                      │\n");
+        printf("  │               CONSULTA DE EQUIPAMENTOS               │\n");
+        printf("  │                                                      │\n");
+        printf("  ├──────────────────────────────────────────────────────┤\n");
+        printf("  │ [1] Listar todos os equipamentos e incidentes        │\n");
+        printf("  │ [2] Buscar um equipamento e seus incidentes          │\n");
+        printf("  │                                                      │\n");
+        printf("  │ [0] Voltar ao menu anterior                          │\n");
+        printf("  └──────────────────────────────────────────────────────┘\n");
+        printf("\n  > Escolha uma opção: ");
+        scanf("%d",&escolha);
+        limpar_buffer();
+
+        pause();
+
+        switch(escolha){
+            case 1:
+                imprimeHash(hash,L);
+                pause();
+                break;
+
+            case 2:
+                imprimeHashIncs(hash,L);
+                pause();
+                break;
+
+            case 0:
+                verifica = 1;
+                break;
+
+            default:
+                printf("\n  [ERRO] Opção inválida. Escolha um valor entre 0 e 2.\n");
+                pause();
+                break;
+        }
+    }while(!verifica);
+}
+
+
+//IMPRESSÃO SOLICITAÇÃO E INCIDENTES
 
 void imprimeIncCresc(Arv *L) {
     noArv *aux = L -> raiz;
@@ -902,41 +1021,6 @@ void chamarRemoc(Arv *L){
         pause();
     }
 }
-
-void imprimeHashIncs(Eqp *hash[], Arv *L){
-    int entrada,verifica;
-    do
-    {
-        entrada = 1;
-        verifica = 0;
-
-        printf("\n  [02/03] NÚMERO DE IDENTIFICAÇÃO DO EQUIPAMENTO RELACIONADO\n");
-        printf("  > Informe o código (1000 a 9999: ");
-
-        scanf("%d",&entrada);
-        limpar_buffer();
-
-        if(entrada < 1000 || entrada > 9999)
-        {
-            verifica = 1;
-            printf("\n  [ERRO] O código deve conter 4 dígitos.\n");
-            pause();
-        }
-        else
-        {
-            if(confereNumIdemHash(hash,entrada) == NULL)
-            {
-                verifica = 1;
-                printf("\n  [ERRO] Equipamento não encontrado.\n");
-                pause();
-            }
-        }
-    }while(verifica == 1);
-}
-
-
-
-
 
 
 #endif // ARVORE_H_INCLUDED

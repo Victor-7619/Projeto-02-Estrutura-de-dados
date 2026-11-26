@@ -5,23 +5,23 @@ void menu(Arv *L, Eqp *hash[]){
 
     do{
         printf("\n");
-        printf("  ╔══════════════════════════════════════════════════════╗\n");
-        printf("  ║                                                      ║\n");
-        printf("  ║               GERENCIAMENTO DE FALHAS                ║\n");
-        printf("  ║             Equipamentos e incidentes                ║\n");
-        printf("  ║                                                      ║\n");
-        printf("  ╠══════════════════════════════════════════════════════╣\n");
-        printf("  ║    [1]  Cadastrar equipamento                        ║\n");
-        printf("  ║    [2]  Registrar incidente                          ║\n");
-        printf("  ║    [3]  Consultar equipamento e incidente            ║\n");
-        printf("  ║    [4]  Listar todos os incidentes                   ║\n");
-        printf("  ║    [5]  Excluir incidente                            ║\n");
-        printf("  ║    [6]  Excluir equipamento                          ║\n");
-        printf("  ╠══════════════════════════════════════════════════════╣\n");
-        printf("  ║    [0]  Encerrar programa                            ║\n");
-        printf("  ╚══════════════════════════════════════════════════════╝\n");
-
+        printf("  ┌──────────────────────────────────────────────────────┐\n");
+        printf("  │                                                      │\n");
+        printf("  │               GERENCIAMENTO DE FALHAS                │\n");
+        printf("  │              Equipamentos e incidentes               │\n");
+        printf("  │                                                      │\n");
+        printf("  ├──────────────────────────────────────────────────────┤\n");
+        printf("  │    [1] Cadastrar equipamento                         │\n");
+        printf("  │    [2] Registrar incidente                           │\n");
+        printf("  │    [3] Consultar equipamentos e incidentes           │\n");
+        printf("  │    [4] Listar todos os incidentes                    │\n");
+        printf("  │    [5] Excluir incidente                             │\n");
+        printf("  │    [6] Excluir equipamento                           │\n");
+        printf("  ├──────────────────────────────────────────────────────┤\n");
+        printf("  │    [0] Encerrar programa                             │\n");
+        printf("  └──────────────────────────────────────────────────────┘\n");
         printf("\n  >> Opção escolhida: ");
+
         scanf("%d",&escolha);
         limpar_buffer();
 
@@ -38,24 +38,28 @@ void menu(Arv *L, Eqp *hash[]){
 
             case 3:
                 pause();
-                imprimeHashIncs(hash,L);
-                imprimeHash(hash,L);
+                escolhaBuscaOuTodos(hash,L);
                 break;
+
             case 4:
                 pause();
                 VerincidentesVazio(L);
                 break;
+
             case 5:
                 pause();
                 chamarRemoc(L);
                 break;
+
             case 6:
                 break;
+
             case 0:
                 printf("encerrando programa.");
                 pause();
                 verifica = 0;
                 break;
+
             default:
                 printf("\n  [ERRO] Opção inválida. Escolha um valor entre 0 e 6.\n");
                 pause();
